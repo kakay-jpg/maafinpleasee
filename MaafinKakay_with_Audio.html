@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maafin Kakay Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #ff69b4, #32cd32);
+      color: white;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .page {
+      text-align: center;
+      max-width: 600px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #yesBtn { background: #32cd32; }
+    #noBtn { background: #ff69b4; position: absolute; }
+    #yesBtn:hover { background: #228b22; }
+    #noBtn:hover { background: #ff1493; }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(#ff69b4 0deg 120deg, #32cd32 120deg 240deg, #ffff00 240deg 360deg);
+      position: relative;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: black;
+      font-weight: bold;
+      transition: transform 3s ease-out;
+    }
+    .wheel span {
+      position: absolute;
+      transform: rotate(calc(var(--rotation) * 1deg)) translateX(70px) rotate(calc(-1 * var(--rotation) * 1deg));
+    }
+    #result {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      opacity: 0;
+      transition: opacity 1s ease-in, transform 1s ease-in;
+      transform: scale(0.5);
+      margin: 20px 0;
+    }
+    #result.show { opacity: 1; transform: scale(1); }
+    #nextBtn { display: none; background: #32cd32; }
+    #nextBtn:hover { background: #228b22; }
+    #heart { position: absolute; font-size: 30px; pointer-events: none; z-index: 1000; }
+  </style>
+</head>
+<body>
+  <div id="heart">💔</div>
+
+  <!-- Musik otomatis -->
+  <audio id="bg-music" autoplay loop>
+    <source src="Alexandra - Reality Club (Lirik dan Terjemahan Indonesia).mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung elemen audio.
+  </audio>
+
+  <div id="page1" class="page">
+    <h1>Maafin kakay yaa🥺</h1>
+    <button id="yesBtn">iyaa dimaafin😘</button>
+    <button id="noBtn">engga mau😡</button>
+  </div>
+
+  <div id="page2" class="page" style="display: none;">
+    <form id="mailForm">
+      <label for="message">Pesan for Kakay in the future</label><br>
+      <textarea id="message" name="message" required></textarea><br>
+      <p>Spin kupon permintaan maaf :</p>
+      <div class="wheel" id="wheel">
+        <span style="--rotation: 0;">nonton bareng</span>
+        <span style="--rotation: 120;">Roblox bareng</span>
+        <span style="--rotation: 240;">Sleep Call</span>
+      </div>
+      <button type="button" id="spinBtn">Spin!</button>
+      <p id="result">Sleep Call sambil nobar dan mabar</p>
+      <button type="button" id="nextBtn">Next</button>
+    </form>
+  </div>
+
+  <div id="page3" class="page" style="display: none;">
+    <h1>Thank You!</h1>
+    <p>Please call Kakayyy at 081239955365 or answer the phone, dia akan menghantuimuu kalo ga diangkat callnya👻</p>
+  </div>
+
+  <script>
+    document.addEventListener('mousemove', e => {
+      const heart = document.getElementById('heart');
+      heart.style.left = e.pageX + 'px';
+      heart.style.top = e.pageY + 'px';
+    });
+
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const page3 = document.getElementById('page3');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const spinBtn = document.getElementById('spinBtn');
+    const wheel = document.getElementById('wheel');
+    const result = document.getElementById('result');
+    const nextBtn = document.getElementById('nextBtn');
+
+    document.addEventListener('mousemove', e => {
+      const noBtnRect = noBtn.getBoundingClientRect();
+      const mouseX = e.clientX, mouseY = e.clientY;
+      const btnX = noBtnRect.left + noBtnRect.width / 2;
+      const btnY = noBtnRect.top + noBtnRect.height / 2;
+      const distance = Math.sqrt((mouseX - btnX) ** 2 + (mouseY - btnY) ** 2);
+      if (distance < 100) {
+        noBtn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+        noBtn.style.top = Math.random() * (window.innerHeight - 100) + 'px';
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      page1.style.display = 'none';
+      page2.style.display = 'block';
+      document.getElementById('bg-music').play();
+    });
+
+    spinBtn.addEventListener('click', () => {
+      const spins = Math.random() * 360 + 1080;
+      wheel.style.transform = `rotate(${spins}deg)`;
+      spinBtn.style.display = 'none';
+      setTimeout(() => {
+        result.classList.add('show');
+        nextBtn.style.display = 'block';
+      }, 3000);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      page2.style.display = 'none';
+      page3.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
